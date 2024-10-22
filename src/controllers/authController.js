@@ -11,7 +11,7 @@ authController.post('/register', async (req, res)=> {
     const { email, password,rePassword, username} = req.body;
 
     try {
-        await authService.register(username, email, password);
+        await authService.register(username, email, password, rePassword);
 
         res.redirect('/auth/login');
 
