@@ -3,6 +3,7 @@ import routes from './routes.js';
 import handlebars from 'express-handlebars';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
+import 'dotenv/config';
 
 
 const app = express();
