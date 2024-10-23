@@ -13,6 +13,7 @@ authController.post('/register', async (req, res)=> {
 
     try {
         await authService.register(username, email, password, rePassword);
+        
 
         res.redirect('/auth/login');
 
@@ -30,11 +31,18 @@ authController.get('/login', (req, res) => {
 authController.post('/login',async  (req, res) => {
     const {email, password} = req.body;
 
-    const token = await authService.login(email, password);
+    try {
+        const token = await authService.login(email, password);
 
-    res.cookie(AUTH_COOKIE_NAME, token);
+        res.cookie(AUTH_COOKIE_NAME, token);
 
-    res.redirect('/');
+        res.redirect('/');
+        
+    } catch (err) {
+        res.render('auth/login', {title: 'Login Page', email });
+    }
+
+    
 })
 
 export default authController;

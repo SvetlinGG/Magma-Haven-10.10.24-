@@ -13,11 +13,14 @@ const authService = {
         if (user){
             throw new Error('User already exists');
         }
-        return User.create({
+        const newUser =  await User.create({
             username,
             password,
             email,
     });
+
+    return this.generateToken(newUser);
+
     },
     async login(email, password){
 
@@ -31,12 +34,19 @@ const authService = {
             throw new Error('Invalid password');
         }
 
+        return this.generateToken(user);
+
+        
+    },
+    async generateToken(user){
         const payload = {
             _id: user._id,
-            email,
+            email: user.email,
             username: user.username,
         };
-        const token = await jwt.sign(payload, process.env.JWT_SECRET);
+        const header = {expiresIn: '2h'}
+
+        const token = await jwt.sign(payload, process.env.JWT_SECRET, header);
 
         return token;
     }
